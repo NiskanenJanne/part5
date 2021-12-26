@@ -14,7 +14,6 @@ const removeBlog = async (id) => {
   const request = await axios.delete(`${baseUrl}/${id}`)
   return request.data
 }
-
 const create = async newBlog => {
   console.log(newBlog)
   const config = { headers: { Authorization: token } }

@@ -3,6 +3,7 @@ import React from 'react'
 import Notification from './Notification'
 import propTypes from 'prop-types'
 const LoginForm = ({ errorMessage, handleSubmit, handleUsernameChange, handlePasswordChange, username, password }) => {
+  
   return(
     <div>
       <h2>Login</h2>

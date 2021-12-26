@@ -23,7 +23,6 @@ const Blog = ({ blog }) => {
     blogService.update(blog.id, blog.title, blog.author, blog.url,blog.likes,blog.user)
   }
 
-
   return(
     <div style={blogStyle}>
       <div style={hideBlog} className="first">
