@@ -2,26 +2,23 @@ import React, { useState, useEffect } from 'react'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
-import Notification from './components/Notification'
-import LoginForm from './components/loginForm'
-import BlogForm from './components/blogForm'
+import LoginForm from './components/LoginForm'
+import BlogForm from './components/BlogForm'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
-  const [title, setNewTitle] = useState('')
-  const [author, setNewAuthor] = useState('')
-  const [url, setNewURL] = useState('')
-  const [username, setUsername] = useState('') 
-  const [password, setPassword] = useState('') 
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
   const [errorMessage, setErrorMessage] = useState(null)
   const [user, setUser] = useState(null)
   const [loginVisible, setLoginVisible] = useState(false)
-  const [newBlogVisible, setNewBlogVisible] = useState(false)  
+  const [newBlogVisible, setNewBlogVisible] = useState(false)
+
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
       setBlogs( blogs )
-    )  
+    )
   }, [])
 
   useEffect(() => {
@@ -32,40 +29,6 @@ const App = () => {
       blogService.setToken(user.token)
     }
   }, [])
-  /*
-  const addBlog = (event) => {
-    const blogObject = {
-      title: title,
-      author: author,
-      url: url,
-    }
-
-    blogService
-      .create(blogObject)
-        .then(returnedBlog => {
-          setErrorMessage(`A new blog ${title} by ${author} has been added`)
-          setTimeout(() => {
-            setErrorMessage(null)
-          }, 5000)
-          setBlogs(blogs.concat(returnedBlog))
-          setNewTitle('')
-          setNewAuthor('')
-          setNewURL('')
-      })
-      
-  }
-  const handleTitleChange = (event) => {
-    console.log(event.target.value)
-    setNewTitle(event.target.value)
-  }
-  const handleAuthorChange = (event) => {
-    console.log(event.target.value)
-    setNewAuthor(event.target.value)
-  }
-  const handleURLChange = (event) => {
-    console.log(event.target.value)
-    setNewURL(event.target.value)
-  }*/
 
   const handleLogin = async (event) => {
     event.preventDefault()
@@ -74,10 +37,10 @@ const App = () => {
       const user = await loginService.login({
         username, password,
       })
-      
+
       window.localStorage.setItem(
         'loggedBlogappUser', JSON.stringify(user)
-      ) 
+      )
       blogService.setToken(user.token)
       setUser(user)
       setUsername('')
@@ -129,108 +92,40 @@ const App = () => {
     return (
       <div>
         <h2>Blogs</h2>
-          <Notification message={errorMessage} />
-          <p>{user.name} is logged in.</p>
 
-          <form onSubmit={handleLogout}>
+        <form onSubmit={handleLogout}>
+          <p>{user.name} is logged in.
             <button type="submit">logout</button>
-          </form>
-          <div style={hideWhenVisible}>
-            <button onClick={() => setNewBlogVisible(true)}>new blog</button>
-          </div>
-          <div style={showWhenVisible}>
-            <BlogForm
-              /*addBlog={addBlog}
+          </p>
+        </form>
+        <div style={hideWhenVisible}>
+          <button onClick={() => setNewBlogVisible(true)}>new blog</button>
+        </div>
+        <div style={showWhenVisible}>
+          <BlogForm
+            /*addBlog={addBlog}
               title={title}
               author={author}
               url={url}
               handleTitleChange={handleTitleChange}
               handleAuthorChange={handleAuthorChange}
               handleURLChange={handleURLChange}*/
-            />
-            <button onClick={() => setLoginVisible(false)}>cancel</button>
-          </div>
-        {blogs.map(blog => <Blog key={blog.id} blog={blog} />
-        )}
+          />
+          <button onClick={() => setNewBlogVisible(false)}>cancel</button>
+        </div>
+        <div>
+          {blogs.map(blog => <Blog key={blog.id} blog={blog} />)}
+        </div>
       </div>
 
     )
   }
 
-  /*alkuperäinen toimiva koodi, älä poista
-  const loginForm = () => (
-    <div>
-      <h2>Login</h2>
-      <Notification message={errorMessage} />
-      <br></br>
-      <form onSubmit={handleLogin}>
-        <div>
-          username 
-            <input
-            type="text"
-            value={ username}
-            name="Username"
-            onChange={({ target }) => setUsername(target.value)}
-          />
+  /*<div style={hideBlog}>
+          <button onClick={() => setBlogVisible(true)}>view</button>
         </div>
-        <div>
-          password 
-            <input
-            type="password"
-            value={ password}
-            name="Password"
-            onChange={({ target }) => setPassword(target.value)}
-          />
-        </div>
-        <button type="submit">login</button>
-      </form> 
-    </div>     
-  )
-   
-  
-  const blogForm = () => (
-      <div>
-        <h2>Blogs</h2>
-        <Notification message={errorMessage} />
-        <p>{user.name} is logged in.</p>
-
-        <form onSubmit={handleLogout}>
-          <button type="submit">logout</button>
-        </form>
-        <br></br>
-        <form onSubmit={addBlog}>
-          <div>
-            title:
-            <input
-              type="text"
-              value={title}
-              onChange={handleTitleChange} />
-          </div>
-          <div>
-            author:
-            <input
-              type="author"
-              value={author}
-              onChange={handleAuthorChange} />
-          </div>
-          <div>
-            url:
-            <input
-              type="text"
-              value={url}
-              onChange={handleURLChange} />
-          </div>
-          <br></br>
-          <button type="submit">save</button>
-        </form>
-
-        {blogs.map(blog => <Blog key={blog.id} blog={blog} />
-        )}
-      </div>
-
-  )
-          */
-
+        <button onClick={() => setBlogVisible(false)}>hide</button>
+       */
   return (
     <div>
       {user === null ?
